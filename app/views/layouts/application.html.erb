@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title><%= @poll.title %></title>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <%= javascript_pack_tag 'jquery-ui-touch-punch', 'data-turbolinks-track': 'reload' %>
+  <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <%= render 'layouts/facebook_metadata' %>
+  <link rel="icon" type="image/x-icon" href="<%= image_url 'favicon.ico' %>" />
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body style="zoom: 1;">
+  <%# This partial probably isn't necessary, but may correct weird behavior on Facebook's end %>
+  <%# render 'layouts/facebook_metadata_fallback' %>
+  <%= render 'layouts/header' %>
+
+  <%= yield %>
+
+  <%= render 'layouts/footer' %>
+  <%= render 'layouts/modal' %>
+</body>
+</html>

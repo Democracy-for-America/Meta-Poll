@@ -1,0 +1,8 @@
+<div class="option-wrapper gumdrop"><div></div>
+  <%= radio_button_tag("vote[response][#{answer.question_id}][response]", answer.field_value, form.object) %>
+  <%= label_tag "vote[response][#{answer.question_id}][response]", answer.field_value do %>
+    <div class="option-img-wrapper"><% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]) %><% else %><%= image_tag "write-in.png", class: "option-img" %><% end %></div>
+    <div class="option-field-value-wrapper"><%= answer.field_value %></div>
+    <div class="option-caption-wrapper"><%= answer.caption %></div>
+  <% end %>
+</div>

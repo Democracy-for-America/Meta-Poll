@@ -1,0 +1,96 @@
+<% if @poll.open? %>
+  <%= form_with(model: @vote, url: request.fullpath, local: true) do |form| %>
+    <div class="red gradient" style="height: 12px;"></div>
+    <div style="height: 24px;"></div>
+
+    <% if @referring_vote %>
+      <div class="container"><h5 class="center" style="line-height: 1; margin-bottom: 0px;">Check out <%= @referring_vote.try(:name).try(:split).try(:first) %>'s picks, then submit your own!</h5></div><hr/>
+    <% end %>
+
+    <%= form.fields_for :responses do |response_form| %>
+      <div class="container"><h4 class="center" style="line-height: 1;"><%= response_form.object.question.question %></h4></div>
+      <div class="container center">
+        <%= response_form.hidden_field :question_id %>
+        <% response_form.object.question.answers.shuffle.each do |answer| %>
+          <div class="option-wrapper gumdrop"><div></div><div>
+            <%= response_form.radio_button :frst_choice, answer.field_value %>
+            <%= response_form.label :frst_choice, value: answer.field_value do %>
+              <div class="option-img-wrapper"><% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]), class: "option-img" %><% else %><%= image_tag "write-in.png", class: "option-img" %><% end %></div>
+              <div class="option-field-value-wrapper"><%= answer.field_value %></div>
+              <div class="option-caption-wrapper"><%= answer.caption %></div>
+            <% end %>
+          </div></div>
+        <% end %>
+      </div>
+
+      <div class="gumdrop center"><div></div><div>
+        <%= response_form.radio_button :frst_choice, "write_in" %>
+        <%= response_form.label :frst_choice, value: "write_in", style: "cursor: pointer; color: #000", onclick: "$(this).find('input[type=text]').focus()" do %>
+          <div><strong>WRITE IN</strong></div>
+          <div><%= response_form.text_field :write_in, class: "autocomplete", style: "width: 240px;", onclick: "$(this).closest('label').click()", data: {question_id: response_form.object.question_id}, autocomplete: "off" %></div>
+        <% end %>
+      </div></div>
+      <hr/>
+    <% end %>
+
+    <div class="container" style="min-height: 240px">
+      <div class="row">
+        <div class="three columns">
+          <%= form.label :name, "NAME" %>
+          <%= form.text_field :name %>
+          <div class="error-messages"><%= @vote.errors[:name][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :zip, "ZIP" %>
+          <%= form.text_field :zip %>
+          <div class="error-messages"><%= @vote.errors[:zip][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :email, "EMAIL" %>
+          <%= form.text_field :email %>
+          <div class="error-messages"><%= @vote.errors[:email][0] %></div>
+        </div>
+
+        <div class="three columns">
+          <%= form.label :phone, "PHONE (optional)" %>
+          <%= form.text_field :phone, id: :dragPhone %>
+          <div class="error-messages"><%= @vote.errors[:phone][0] %></div>
+
+          <% if @poll.sms_disclaimer.present? %>
+            <div class="height: 0px;"><div id="smsDisclaimer" style="display: none; line-height: 1.4;"><label style="font-size: 80%; font-weight: normal;"><%= form.check_box :sms_opt_in, id: :dragSmsOptIn %> <%= @poll.sms_disclaimer.html_safe %></label></div></div>
+          <% end %>
+        </div>
+      </div>
+      <br/><div style="text-align: center"><%= form.submit "Submit", class: "button-blue" %></div>
+    </div>
+
+    <div class="red gradient" style="height: 12px;"></div>
+  <% end %>
+<% elsif @poll.show_results? %>
+  <div class="red gradient" style="height: 15px;"></div>
+  <div class="container" style="margin-top: 1em;">
+    <h2 style="text-align: center;">Voting has ended!<br/><%= link_to "Click here to see the final results.", "/#{ [params[:poll], 'results'].reject(&:blank?).join("/") }" %></h2>
+  </div>
+<% else %>
+  <div class="red gradient" style="height: 15px;"></div>
+  <div class="container" style="margin-top: 1em;">
+    <h2 style="text-align: center;">Voting has ended!<br/>Come back soon for the final results.</h2>
+  </div>
+<% end %>
+
+<script>
+  $(document).on('turbolinks:load', function() {
+    window.autocompleteChoices = {<% @poll.questions.each do |q| %>
+      <%= q.id %>: <%= q.autocomplete_choices.split(/\n|\r/).reject(&:blank?).to_json.html_safe %>,
+    <% end %>}
+
+    window.writeInInputs = document.querySelectorAll(".autocomplete");
+
+    for (var i = 0; i < writeInInputs.length; i++) {
+      var questionId = $(writeInInputs[i]).data("question-id")
+      autocomplete(writeInInputs[i], autocompleteChoices[questionId]);
+    }
+  });
+</script>
