@@ -1,0 +1,11 @@
+div.option-wrapper { display: inline-block; width: 150px; vertical-align: top; margin-bottom: 12px; line-height: 1 }
+div.option-img-wrapper, div.option-field-value-wrapper, div.option-caption-wrapper { text-align: center; font-weight: normal; color: #000; }
+img.option-img, div.option-field-value-wrapper, div.option-caption-wrapper { cursor: pointer; }
+
+div.option-field-value-wrapper { font-weight: bold; text-transform: uppercase; }
+.gumdrop img.option-img { height: 100px; width: 100px; border: solid 4px #ccc; }
+.gumdrop input[type=text] { border: solid 4px #ccc; }
+
+.gumdrop > div + div > input[type=radio]:checked + label img.option-img { border: solid 4px #FF8C00; }
+.gumdrop > div + div > input[type=radio]:checked + label input[type=text] { border: solid 4px #FF8C00; }
+div.gumdrop > div + div > input[type=radio] { display: none; }

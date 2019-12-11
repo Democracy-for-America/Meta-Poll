@@ -1,0 +1,15 @@
+<div class="blue gradient">
+  <div id="header" class="container no-select">
+    <% if @poll.logo.attached? %>
+      <%= link_to @poll.logo_url, id: "logo-wrapper" do %>
+        <%= image_tag @poll.logo, id: 'logo' %>
+      <% end %>
+    <% end %>
+
+    <div id="title-wrapper">
+      <div id="main-title"><%= @poll.title %></div>
+      <div id="sub-title"><%= @poll.subtitle %></div>
+    </div>
+  </div>
+</div>
+<div style="height: 1px;"></div>

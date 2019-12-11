@@ -1,0 +1,31 @@
+<div class="red gradient" style="height: 12px;"></div>
+<div style="height: 24px;"></div>
+
+<div class="container center" style="margin-bottom: 24px;">
+  <% @vote.responses.each do |r| %>
+    <div style="display: inline-block; width: 150px; vertical-align: top; line-height: 1;">
+      <div style="font-weight: bold;"><%= r.question.field_name %>:</div>
+      <div><% if answer = r.question.answers.select{ |a| a.field_value == r.frst_choice }[0] %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]), class: "option-img" %><% else %><%= image_tag "write-in.png", style: "height: 100px; width: 100px;" %><% end %></div>
+      <div style="font-weight: bold;"><%= r.frst_choice %></div>
+    </div>
+  <% end %>
+</div>
+
+<h5 style="margin-bottom: 0px; text-align: center;"><strong>SHARE YOUR PICKS:</strong></h5>
+
+<p style="text-align: center;">
+  <%= link_to image_tag("facebook.png", alt: "Facebook", style: "border-radius: 6px;"), @vote.facebook_url(request.host, params[:poll]), class: "social", target: "_blank" %>
+  <%= link_to image_tag("twitter.png", alt: "Twitter", style: "border-radius: 6px;"), @vote.twitter_url(request.host, params[:poll]), class: "social", target: "_blank" %><br>
+</p>
+
+<p style="text-align: center;">
+  <strong style="font-size: 18px;">Or, copy and paste this URL:<br /></strong><span style="font-size: 16px;"><%= @vote.share_url("#{request.protocol}#{request.host}", params[:poll]) %></span>
+</p>
+
+<% if @poll.donate_url.present? %>
+  <h5 style="margin-bottom: 0px; text-align: center;"><strong>CONTRIBUTE:</strong></h5>
+
+  <p style="text-align: center;">
+    <%= link_to image_tag("actblue.png", alt: "Contribute via ActBlue", style: "border-radius: 6px;"), @poll.donate_url, target: "_blank" %></strong>
+  </p>
+<% end %>

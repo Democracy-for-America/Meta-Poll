@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Polls</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Slug</th>
+      <th>Title</th>
+      <th>End voting at</th>
+      <th>Show results</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @polls.each do |poll| %>
+      <tr>
+        <td><%= poll.slug %></td>
+        <td><%= link_to poll.title, "/#{poll.slug}" %></td>
+        <td><%= poll.end_voting_at %></td>
+        <td><%= poll.show_results_at %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_poll_path(poll) %> |
+          <%= link_to 'Results', admin_poll_path(poll) %> |
+          <%= link_to 'Q\'s', admin_poll_questions_path(poll) %> &
+          <%= link_to 'A\'s', admin_poll_answers_path(poll) %> |
+          <%= link_to 'Destroy', [:admin, poll], method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Poll', new_admin_poll_path %>

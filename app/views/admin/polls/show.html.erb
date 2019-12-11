@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<% @poll.questions.each do |question| %>
+
+<h1><%= question.field_name %></h1>
+
+<table>
+  <thead>
+    <th></th>
+    <th></th>
+    <th style="text-align: right;">Votes</th>
+    <th style="text-align: right;">Percent</th>
+  </thead>
+
+  <tbody>
+    <% @poll.cached_after_action_results(question_id: question.id).each do |answer, i| %>
+      <tr>
+        <td>
+          <% if answer.image.attached? %><%= image_tag answer.image.variant(resize_to_limit: [100, 100]), style: "height: 60px; width: 60px; border-radius: 25%;" %><% else %><%= image_tag "write-in.png", style: "height: 60px; width: 60px; border-radius: 25%;" %><% end %>
+        </td>
+        <td><%= answer.field_value %></td>
+        <td style="text-align: right;"><%= number_with_delimiter answer.total %></td>
+        <td style="text-align: right;"><%= answer.percent %>%</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+
+<%= link_to 'Edit', edit_admin_poll_path(@poll) %> |
+<%= link_to 'Back', admin_polls_path %>

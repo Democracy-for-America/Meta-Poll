@@ -1,0 +1,6 @@
+<div class="red gradient" style="height: 12px;"></div>
+
+<div class="container">
+  <h4 class="center"><%= question.question %></h4>
+  <div class="center"><%= render partial: "answer", collection: question.answers, locals: {form: form} %></div>
+</div>
