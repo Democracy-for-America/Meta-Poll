@@ -16,6 +16,7 @@
       <div class="container"><h5 class="center" style="line-height: 1;"><%= response_form.object.question.question %></h4></div>
       <div class="container center">
         <%= response_form.hidden_field :question_id %>
+        <%= response_form.radio_button :frst_choice, nil, checked: response_form.object.write_in.blank?, class: "placeholder", style: "display: none;" %>
         <% response_form.object.question.answers.select{ |a| a.show_on_ballot }.shuffle.each do |answer| %>
           <div class="option-wrapper gumdrop"><div></div><div>
             <%= response_form.radio_button :frst_choice, answer.field_value %>
@@ -29,7 +30,7 @@
       </div>
 
       <div class="gumdrop center"><div></div><div>
-        <%= response_form.radio_button :frst_choice, "write_in" %>
+        <%= response_form.radio_button :frst_choice, "write_in", checked: response_form.object.write_in.present? %>
         <%= response_form.label :frst_choice, value: "write_in", style: "cursor: pointer; color: #000", onclick: "$(this).find('input[type=text]').focus()" do %>
           <div><strong>WRITE IN</strong></div>
           <div><%= response_form.text_field :write_in, class: "autocomplete", style: "width: 240px;", onclick: "$(this).closest('label').click()", data: {question_id: response_form.object.question_id}, autocomplete: "off" %></div>
